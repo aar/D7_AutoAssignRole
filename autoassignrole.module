@@ -67,6 +67,12 @@ function autoassignrole_menu() {
  * Implements hook_user_presave().
  */
 function autoassignrole_user_presave(&$edit, $account, $category) {
+  // If this is an administrator creating the account only use auto_assign if
+  // allowed by autoassignrole_admin_active
+  if (arg(0) == 'admin' && variable_get('autoassignrole_admin_active', 0) == 0) {
+    return;
+  }  
+  
   // Use case http://drupal.org/node/971622
   // Make sure we only assign roles automatically when enabled to do so.
   if (variable_get('autoassignrole_auto_active', 0) || variable_get("autoassignrole_user_active", 0)) {
